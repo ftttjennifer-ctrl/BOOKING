@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>線上預約表單</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+      background: linear-gradient(135deg, #fff8f0, #f3efe8);
+      color: #3f352c;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 18px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 36px 20px 28px;
+      background: #ffffffcc;
+      border-radius: 24px;
+      box-shadow: 0 12px 35px rgba(92, 73, 55, 0.12);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      letter-spacing: 1px;
+      color: #7b573b;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.7;
+      color: #6a5a4a;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 12px 35px rgba(92, 73, 55, 0.12);
+    }
+
+    .section-title {
+      font-size: 22px;
+      color: #7b573b;
+      margin: 0 0 20px;
+      border-left: 6px solid #d9b99b;
+      padding-left: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #4f4035;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #ded2c8;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 16px;
+      background: #fffdfb;
+      color: #3f352c;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #b98963;
+      box-shadow: 0 0 0 4px rgba(185, 137, 99, 0.12);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .service-options,
+    .time-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .option {
+      position: relative;
+    }
+
+    .option input {
+      display: none;
+    }
+
+    .option span {
+      display: block;
+      text-align: center;
+      padding: 13px 8px;
+      border: 1px solid #ded2c8;
+      border-radius: 16px;
+      background: #fffdfb;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 600;
+    }
+
+    .option input:checked + span {
+      background: #9b6f4c;
+      color: #fff;
+      border-color: #9b6f4c;
+      box-shadow: 0 8px 20px rgba(155, 111, 76, 0.22);
+    }
+
+    .notice {
+      background: #fff7ea;
+      border: 1px solid #efd8bd;
+      color: #72523a;
+      border-radius: 18px;
+      padding: 16px 18px;
+      line-height: 1.7;
+      margin: 8px 0 22px;
+      font-size: 15px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 16px 20px;
+      background: #7b573b;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      background: #65462f;
+      transform: translateY(-1px);
+    }
+
+    .success {
+      display: none;
+      margin-top: 18px;
+      background: #eef9f0;
+      border: 1px solid #c7e8cd;
+      color: #2d6a38;
+      padding: 16px;
+      border-radius: 16px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .footer {
+      text-align: center;
+      color: #8a7a6c;
+      font-size: 14px;
+      margin-top: 22px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 720px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .card {
+        padding: 22px;
+      }
+
+      .grid,
+      .service-options,
+      .time-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>線上預約</h1>
+      <p>歡迎填寫預約資料，我們將盡快與您確認時間。<br />適合用於課程、眼周撥筋、諮詢、活動報名等服務。</p>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">預約資料</h2>
+
+      <div class="notice">
+        📌 此頁面目前為前端預約表單示範版。送出後會在畫面顯示預約摘要；若要真正收到預約資料，可再串接 Google 表單、Email、LINE 或後端資料庫。
+      </div>
+
+      <form id="bookingForm">
+        <div class="grid">
+          <div class="form-group">
+            <label for="name">姓名 *</label>
+            <input type="text" id="name" name="name" placeholder="請輸入姓名" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">電話 / LINE *</label>
+            <input type="text" id="phone" name="phone" placeholder="請輸入聯絡方式" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="選填" />
+        </div>
+
+        <div class="form-group">
+          <label>預約項目 *</label>
+          <div class="service-options">
+            <label class="option">
+              <input type="radio" name="service" value="眼周撥筋" required />
+              <span>眼周撥筋</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="service" value="親子護眼課程" />
+              <span>親子護眼課程</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="service" value="活動報名" />
+              <span>活動報名</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="form-group">
+            <label for="date">預約日期 *</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+
+          <div class="form-group">
+            <label>預約時段 *</label>
+            <div class="time-options">
+              <label class="option">
+                <input type="radio" name="time" value="上午 10:00" required />
+                <span>上午 10:00</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="time" value="下午 14:00" />
+                <span>下午 14:00</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="time" value="晚上 19:00" />
+                <span>晚上 19:00</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="people">人數</label>
+          <select id="people" name="people">
+            <option value="1人">1人</option>
+            <option value="2人">2人</option>
+            <option value="3人">3人</option>
+            <option value="4人以上">4人以上</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">備註</label>
+          <textarea id="message" name="message" placeholder="可填寫特殊需求、孩子年齡、想詢問的問題等"></textarea>
+        </div>
+
+        <button class="submit-btn" type="submit">送出預約</button>
+
+        <div id="successBox" class="success"></div>
+      </form>
+    </section>
+
+    <p class="footer">
+      © 2026 線上預約系統｜可自行修改服務名稱、時段與聯絡資訊
+    </p>
+  </main>
+
+  <script>
+    const form = document.getElementById("bookingForm");
+    const successBox = document.getElementById("successBox");
+
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("date").setAttribute("min", today);
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const data = new FormData(form);
+      const name = data.get("name");
+      const phone = data.get("phone");
+      const service = data.get("service");
+      const date = data.get("date");
+      const time = data.get("time");
+      const people = data.get("people");
+      const message = data.get("message") || "無";
+
+      successBox.innerHTML = `
+        ✅ 預約已送出！<br>
+        姓名：${name}<br>
+        聯絡方式：${phone}<br>
+        預約項目：${service}<br>
+        日期時間：${date} ${time}<br>
+        人數：${people}<br>
+        備註：${message}<br><br>
+        請等待我們與您確認正式預約時間。
+      `;
+      successBox.style.display = "block";
+      form.scrollIntoView({ behavior: "smooth", block: "end" });
+    });
+  </script>
+</body>
+</html>
