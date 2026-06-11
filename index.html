@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>線上預約表單</title>
+  <title>護眼服務線上預約</title>
   <style>
     * {
       box-sizing: border-box;
@@ -12,57 +12,73 @@
     body {
       margin: 0;
       font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
-      background: linear-gradient(135deg, #fff8f0, #f3efe8);
-      color: #3f352c;
+      background: #fff8f0;
+      color: #302821;
     }
 
     .container {
-      max-width: 920px;
+      width: min(940px, 100%);
       margin: 0 auto;
-      padding: 32px 18px;
+      padding: 28px 16px;
+    }
+
+    .hero,
+    .booking-panel,
+    .contact-panel {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #eadccb;
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(83, 62, 43, 0.1);
     }
 
     .hero {
+      padding: 34px 22px 28px;
+      margin-bottom: 18px;
       text-align: center;
-      padding: 36px 20px 28px;
-      background: #ffffffcc;
-      border-radius: 24px;
-      box-shadow: 0 12px 35px rgba(92, 73, 55, 0.12);
-      margin-bottom: 24px;
     }
 
     .hero h1 {
       margin: 0 0 12px;
+      color: #735138;
       font-size: 34px;
-      letter-spacing: 1px;
-      color: #7b573b;
+      letter-spacing: 0;
     }
 
     .hero p {
       margin: 0;
+      color: #665446;
       font-size: 17px;
       line-height: 1.7;
-      color: #6a5a4a;
     }
 
-    .card {
-      background: #fff;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 12px 35px rgba(92, 73, 55, 0.12);
+    .booking-panel,
+    .contact-panel {
+      padding: 26px;
+      margin-top: 18px;
     }
 
     .section-title {
-      font-size: 22px;
-      color: #7b573b;
-      margin: 0 0 20px;
-      border-left: 6px solid #d9b99b;
+      margin: 0 0 18px;
       padding-left: 12px;
+      border-left: 6px solid #c9a47f;
+      color: #735138;
+      font-size: 22px;
+    }
+
+    .notice {
+      margin: 0 0 22px;
+      padding: 15px 16px;
+      border: 1px solid #efd8bd;
+      border-radius: 8px;
+      background: #fff5e5;
+      color: #6f4f39;
+      line-height: 1.7;
+      font-size: 15px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
     }
 
@@ -72,129 +88,198 @@
 
     label {
       display: block;
-      font-weight: 700;
       margin-bottom: 8px;
-      color: #4f4035;
+      color: #43352b;
+      font-weight: 700;
     }
 
     input,
-    select,
     textarea {
       width: 100%;
-      border: 1px solid #ded2c8;
-      border-radius: 14px;
+      border: 1px solid #d9cabc;
+      border-radius: 8px;
       padding: 13px 14px;
-      font-size: 16px;
       background: #fffdfb;
-      color: #3f352c;
+      color: #302821;
+      font-size: 16px;
       outline: none;
-      transition: 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     input:focus,
-    select:focus,
     textarea:focus {
-      border-color: #b98963;
-      box-shadow: 0 0 0 4px rgba(185, 137, 99, 0.12);
+      border-color: #b4875f;
+      box-shadow: 0 0 0 4px rgba(180, 135, 95, 0.15);
     }
 
     textarea {
-      min-height: 100px;
+      min-height: 96px;
       resize: vertical;
     }
 
     .service-options,
     .time-options {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin-top: 8px;
+    }
+
+    .service-options {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .time-options {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 
     .option {
       position: relative;
+      margin: 0;
     }
 
     .option input {
-      display: none;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .option span {
-      display: block;
-      text-align: center;
-      padding: 13px 8px;
-      border: 1px solid #ded2c8;
-      border-radius: 16px;
+      display: flex;
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #d9cabc;
+      border-radius: 8px;
+      padding: 10px;
       background: #fffdfb;
+      color: #43352b;
+      text-align: center;
+      line-height: 1.35;
+      font-weight: 700;
       cursor: pointer;
-      transition: 0.2s;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .service-options .option span {
+      min-height: 92px;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .option small {
+      color: #806954;
+      font-size: 14px;
       font-weight: 600;
+      line-height: 1.45;
     }
 
     .option input:checked + span {
-      background: #9b6f4c;
+      border-color: #8c623f;
+      background: #8c623f;
       color: #fff;
-      border-color: #9b6f4c;
-      box-shadow: 0 8px 20px rgba(155, 111, 76, 0.22);
+      box-shadow: 0 8px 20px rgba(140, 98, 63, 0.22);
     }
 
-    .notice {
-      background: #fff7ea;
-      border: 1px solid #efd8bd;
-      color: #72523a;
-      border-radius: 18px;
-      padding: 16px 18px;
-      line-height: 1.7;
-      margin: 8px 0 22px;
-      font-size: 15px;
+    .option input:checked + span small {
+      color: #fff3e7;
+    }
+
+    .empty-times {
+      display: none;
+      margin-top: 8px;
+      color: #9b3f34;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .submit-btn,
+    .line-link {
+      display: inline-flex;
+      width: 100%;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 17px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
     }
 
     .submit-btn {
-      width: 100%;
-      border: none;
-      border-radius: 18px;
-      padding: 16px 20px;
-      background: #7b573b;
+      margin-top: 6px;
+      background: #735138;
       color: #fff;
-      font-size: 18px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: 0.2s;
-      margin-top: 8px;
+    }
+
+    .submit-btn:hover,
+    .line-link:hover {
+      transform: translateY(-1px);
     }
 
     .submit-btn:hover {
-      background: #65462f;
-      transform: translateY(-1px);
+      background: #5f422d;
+    }
+
+    .line-link {
+      margin-top: 12px;
+      background: #06c755;
+      color: #fff;
+    }
+
+    .line-link:hover {
+      background: #05ad4a;
     }
 
     .success {
       display: none;
       margin-top: 18px;
-      background: #eef9f0;
-      border: 1px solid #c7e8cd;
-      color: #2d6a38;
+      border: 1px solid #bfe4c7;
+      border-radius: 8px;
       padding: 16px;
-      border-radius: 16px;
+      background: #effaf1;
+      color: #285f34;
       line-height: 1.7;
       font-weight: 700;
     }
 
-    .footer {
-      text-align: center;
-      color: #8a7a6c;
-      font-size: 14px;
-      margin-top: 22px;
-      line-height: 1.6;
+    .success h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
     }
 
-    @media (max-width: 720px) {
+    .success p {
+      margin: 4px 0;
+    }
+
+    .contact-panel p,
+    .footer {
+      color: #766556;
+      line-height: 1.7;
+    }
+
+    .contact-panel p {
+      margin: 0;
+    }
+
+    .footer {
+      margin: 20px 0 0;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
       .hero h1 {
         font-size: 28px;
       }
 
-      .card {
-        padding: 22px;
+      .booking-panel,
+      .contact-panel {
+        padding: 20px;
       }
 
       .grid,
@@ -208,16 +293,16 @@
 <body>
   <main class="container">
     <section class="hero">
-      <h1>線上預約</h1>
-      <p>歡迎填寫預約資料，我們將盡快與您確認時間。<br />適合用於課程、眼周撥筋、諮詢、活動報名等服務。</p>
+      <h1>護眼服務線上預約</h1>
+      <p>選擇服務、日期與時段後送出預約。確認預約成功後，才會提供預付訂金帳號。</p>
     </section>
 
-    <section class="card">
-      <h2 class="section-title">預約資料</h2>
+    <section class="booking-panel">
+      <h2 class="section-title">預約資訊</h2>
 
-      <div class="notice">
-        📌 此頁面目前為前端預約表單示範版。送出後會在畫面顯示預約摘要；若要真正收到預約資料，可再串接 Google 表單、Email、LINE 或後端資料庫。
-      </div>
+      <p class="notice">
+        預約送出後，畫面會顯示您的預約摘要。已預約過的同日期時段會自動隱藏，避免重複選擇。
+      </p>
 
       <form id="bookingForm">
         <div class="grid">
@@ -228,29 +313,31 @@
 
           <div class="form-group">
             <label for="phone">電話 / LINE *</label>
-            <input type="text" id="phone" name="phone" placeholder="請輸入聯絡方式" required />
+            <input type="text" id="phone" name="phone" placeholder="請輸入電話或 LINE ID" required />
           </div>
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="選填" />
+          <input type="email" id="email" name="email" placeholder="example@email.com" />
         </div>
 
         <div class="form-group">
-          <label>預約項目 *</label>
+          <label>預約內容 *</label>
           <div class="service-options">
             <label class="option">
-              <input type="radio" name="service" value="眼周撥筋" required />
-              <span>眼周撥筋</span>
+              <input type="radio" name="service" value="護眼撥筋｜20分鐘｜399元" required />
+              <span>
+                護眼撥筋
+                <small>20 分鐘｜399 元</small>
+              </span>
             </label>
             <label class="option">
-              <input type="radio" name="service" value="親子護眼課程" />
-              <span>親子護眼課程</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="service" value="活動報名" />
-              <span>活動報名</span>
+              <input type="radio" name="service" value="親子護眼課程｜2小時｜一組一大一小 3600元｜滿五組開班" />
+              <span>
+                親子護眼課程
+                <small>2 小時｜一組一大一小 3600 元｜滿五組開班</small>
+              </span>
             </label>
           </div>
         </div>
@@ -263,55 +350,83 @@
 
           <div class="form-group">
             <label>預約時段 *</label>
-            <div class="time-options">
-              <label class="option">
-                <input type="radio" name="time" value="上午 10:00" required />
-                <span>上午 10:00</span>
-              </label>
-              <label class="option">
-                <input type="radio" name="time" value="下午 14:00" />
-                <span>下午 14:00</span>
-              </label>
-              <label class="option">
-                <input type="radio" name="time" value="晚上 19:00" />
-                <span>晚上 19:00</span>
-              </label>
-            </div>
+            <div class="time-options" id="timeOptions"></div>
+            <p class="empty-times" id="emptyTimes">此日期的時段都已被預約，請選擇其他日期。</p>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="people">人數</label>
-          <select id="people" name="people">
-            <option value="1人">1人</option>
-            <option value="2人">2人</option>
-            <option value="3人">3人</option>
-            <option value="4人以上">4人以上</option>
-          </select>
-        </div>
-
-        <div class="form-group">
           <label for="message">備註</label>
-          <textarea id="message" name="message" placeholder="可填寫特殊需求、孩子年齡、想詢問的問題等"></textarea>
+          <textarea id="message" name="message" placeholder="可填寫特殊需求、希望聯絡時間或其他補充事項"></textarea>
         </div>
 
         <button class="submit-btn" type="submit">送出預約</button>
 
-        <div id="successBox" class="success"></div>
+        <div id="successBox" class="success" aria-live="polite"></div>
       </form>
     </section>
 
-    <p class="footer">
-      © 2026 線上預約系統｜可自行修改服務名稱、時段與聯絡資訊
-    </p>
+    <section class="contact-panel">
+      <h2 class="section-title">聯絡我</h2>
+      <p>有任何問題，歡迎加入官方 LINE 詢問。官方 LINE：@bcj4965p</p>
+      <a class="line-link" href="https://lin.ee/bcj4965p" target="_blank" rel="noopener">加入官方 LINE</a>
+    </section>
+
+    <p class="footer">© 2026 護眼服務線上預約</p>
   </main>
 
   <script>
     const form = document.getElementById("bookingForm");
     const successBox = document.getElementById("successBox");
+    const dateInput = document.getElementById("date");
+    const timeOptions = document.getElementById("timeOptions");
+    const emptyTimes = document.getElementById("emptyTimes");
+    const availableTimes = ["10:00", "12:00", "14:00", "16:00", "20:00"];
+    const storageKey = "eye-care-bookings";
 
     const today = new Date().toISOString().split("T")[0];
-    document.getElementById("date").setAttribute("min", today);
+    dateInput.setAttribute("min", today);
+    dateInput.value = today;
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getBookings() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey)) || {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveBookings(bookings) {
+      localStorage.setItem(storageKey, JSON.stringify(bookings));
+    }
+
+    function renderTimes() {
+      const date = dateInput.value;
+      const bookings = getBookings();
+      const bookedTimes = bookings[date] || [];
+      const openTimes = availableTimes.filter((time) => !bookedTimes.includes(time));
+
+      timeOptions.innerHTML = openTimes.map((time) => `
+        <label class="option">
+          <input type="radio" name="time" value="${time}" required />
+          <span>${time}</span>
+        </label>
+      `).join("");
+
+      emptyTimes.style.display = openTimes.length ? "none" : "block";
+    }
+
+    dateInput.addEventListener("change", renderTimes);
+    renderTimes();
 
     form.addEventListener("submit", function(event) {
       event.preventDefault();
@@ -319,24 +434,44 @@
       const data = new FormData(form);
       const name = data.get("name");
       const phone = data.get("phone");
+      const email = data.get("email") || "未填寫";
       const service = data.get("service");
       const date = data.get("date");
       const time = data.get("time");
-      const people = data.get("people");
       const message = data.get("message") || "無";
 
+      if (!time) {
+        emptyTimes.style.display = "block";
+        return;
+      }
+
+      const bookings = getBookings();
+      bookings[date] = bookings[date] || [];
+
+      if (bookings[date].includes(time)) {
+        renderTimes();
+        successBox.style.display = "none";
+        return;
+      }
+
+      bookings[date].push(time);
+      saveBookings(bookings);
+
       successBox.innerHTML = `
-        ✅ 預約已送出！<br>
-        姓名：${name}<br>
-        聯絡方式：${phone}<br>
-        預約項目：${service}<br>
-        日期時間：${date} ${time}<br>
-        人數：${people}<br>
-        備註：${message}<br><br>
-        請等待我們與您確認正式預約時間。
+        <h3>預約資料已送出</h3>
+        <p>姓名：${escapeHtml(name)}</p>
+        <p>電話 / LINE：${escapeHtml(phone)}</p>
+        <p>Email：${escapeHtml(email)}</p>
+        <p>預約內容：${escapeHtml(service)}</p>
+        <p>預約時間：${escapeHtml(date)} ${escapeHtml(time)}</p>
+        <p>備註：${escapeHtml(message)}</p>
+        <p>確認預約成功後，才會提供預付訂金帳號。</p>
       `;
       successBox.style.display = "block";
-      form.scrollIntoView({ behavior: "smooth", block: "end" });
+      form.reset();
+      dateInput.value = date;
+      renderTimes();
+      successBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   </script>
 </body>
